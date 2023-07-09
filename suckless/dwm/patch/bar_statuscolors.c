@@ -1,22 +1,17 @@
 int
 width_statuscolors(Bar *bar, BarArg *a)
 {
-	return textw_wosc(stext);
+	return textw_wosc(rawstext);
 }
 
 
 int
 draw_statuscolors(Bar *bar, BarArg *a)
 {
-	return draw_wosc(bar, a, stext);
+	return draw_wosc(bar, a, rawstext);
 }
 
 
-int
-click_statuscolors(Bar *bar, Arg *arg, BarArg *a)
-{
-	return ClkStatusText;
-}
 
 int
 textw_wosc(char *s)

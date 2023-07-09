@@ -36,7 +36,6 @@ dragmfact(const Arg *arg)
 		|| (!fixed && m->nmaster && n <= m->nmaster) // no master
 		|| m->lt[m->sellt]->arrange == &grid
 		|| m->lt[m->sellt]->arrange == &horizgrid
-		|| m->lt[m->sellt]->arrange == &gaplessgrid
 		|| m->lt[m->sellt]->arrange == &nrowgrid
 	)
 		return;
