@@ -5,6 +5,7 @@ static const unsigned int borderpx       = 0;   /* border pixel of windows */
 static const int corner_radius           = 10;
 static const unsigned int snap           = 32;  /* snap pixel */
 static const int swallowfloating         = 0;   /* 1 means swallow floating windows by default */
+static const int scalepreview            = 4;        /* Tag preview scaling */
 static const unsigned int gappih         = 20;  /* horiz inner gap between windows */
 static const unsigned int gappiv         = 10;  /* vert inner gap between windows */
 static const unsigned int gappoh         = 10;  /* horiz outer gap between windows and screen edge */
@@ -22,6 +23,8 @@ static const int statusmon               = -1;
 static const int horizpadbar             = 2;   /* horizontal padding for statusbar */
 static const int vertpadbar              = 0;   /* vertical padding for statusbar */
 static const char buttonbar[]            = "<O>";
+static const unsigned int systrayspacing = 2;   /* systray spacing */
+static const int showsystray             = 1;   /* 0 means no systray */
 static const unsigned int ulinepad = 5;         /* horizontal padding between the underline and tag */
 static const unsigned int ulinestroke  = 2;     /* thickness / height of the underline */
 static const unsigned int ulinevoffset = 0;     /* how far above the bottom of the bar the line should appear */
@@ -194,8 +197,10 @@ static const MonitorRule monrules[] = {
 static const BarRule barrules[] = {
 	/* monitor   bar    alignment         widthfunc                 drawfunc                clickfunc                hoverfunc                name */
 	{ -1,        0,     BAR_ALIGN_LEFT,   width_stbutton,           draw_stbutton,          click_stbutton,          NULL,                    "statusbutton" },
+	{ -1,        0,     BAR_ALIGN_LEFT,   width_tags,               draw_tags,              click_tags,              hover_tags,              "tags" },
+	{  0,        0,     BAR_ALIGN_RIGHT,  width_systray,            draw_systray,           click_systray,           NULL,                    "systray" },
 	{ -1,        0,     BAR_ALIGN_LEFT,   width_ltsymbol,           draw_ltsymbol,          click_ltsymbol,          NULL,                    "layout" },
-	{ statusmon, 0,     BAR_ALIGN_RIGHT,  width_statuscolors,       draw_statuscolors,      click_statuscmd,         NULL,                    "statuscolors" },
+	{ statusmon, 0,     BAR_ALIGN_RIGHT,  width_status2d,           draw_status2d,          click_statuscmd,         NULL,                    "status2d" },
 };
 
 /* layout(s) */
@@ -250,8 +255,14 @@ static const char *dmenucmd[] = {
 };
 static const char *termcmd[]  = { "st", NULL };
 
-/* This defines the name of the executable that handles the bar (used for signalling purposes) */
-#define STATUSBAR "dwmblocks"
+/* commands spawned when clicking statusbar, the mouse button pressed is exported as BUTTON */
+static const StatusCmd statuscmds[] = {
+	{ "notify-send Volume$BUTTON", 1 },
+	{ "notify-send CPU$BUTTON", 2 },
+	{ "notify-send Battery$BUTTON", 3 },
+};
+/* test the above with: xsetroot -name "$(printf '\x01Volume |\x02 CPU |\x03 Battery')" */
+static const char *statuscmd[] = { "/bin/sh", "-c", NULL, NULL };
 
 
 static const Key keys[] = {
@@ -340,9 +351,9 @@ static const Button buttons[] = {
 	{ ClkLtSymbol,          0,                   Button1,        setlayout,      {0} },
 	{ ClkLtSymbol,          0,                   Button3,        setlayout,      {.v = &layouts[2]} },
 	{ ClkWinTitle,          0,                   Button2,        zoom,           {0} },
-	{ ClkStatusText,        0,                   Button1,        sigstatusbar,   {.i = 1 } },
-	{ ClkStatusText,        0,                   Button2,        sigstatusbar,   {.i = 2 } },
-	{ ClkStatusText,        0,                   Button3,        sigstatusbar,   {.i = 3 } },
+	{ ClkStatusText,        0,                   Button1,        spawn,          {.v = statuscmd } },
+	{ ClkStatusText,        0,                   Button2,        spawn,          {.v = statuscmd } },
+	{ ClkStatusText,        0,                   Button3,        spawn,          {.v = statuscmd } },
 	{ ClkClientWin,         MODKEY,              Button1,        movemouse,      {0} },
 	{ ClkClientWin,         MODKEY,              Button2,        togglefloating, {0} },
 	{ ClkClientWin,         MODKEY,              Button3,        resizemouse,    {0} },

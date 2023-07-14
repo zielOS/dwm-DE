@@ -1,3 +1,6 @@
+static const char statusexport[] = "export BUTTON=-;";
+static int statuscmdn;
+static char lastbutton[] = "-";
 
 int
 click_statuscmd(Bar *bar, Arg *arg, BarArg *a)
@@ -12,24 +15,21 @@ click_statuscmd_text(Arg *arg, int rel_x, char *text)
 	int i = -1;
 	int x = 0;
 	char ch;
-	statussig = -1;
+	statuscmdn = 0;
 	while (text[++i]) {
 		if ((unsigned char)text[i] < ' ') {
-			if (text[i] < 17)
-				continue;
 			ch = text[i];
 			text[i] = '\0';
-			x += TEXTWM(text) - lrpad;
+			x += status2dtextlength(text);
 			text[i] = ch;
 			text += i+1;
 			i = -1;
-			if (x >= rel_x && statussig != -1)
+			if (x >= rel_x)
 				break;
-			statussig = ch;
+			if (ch <= LENGTH(statuscmds))
+				statuscmdn = ch;
 		}
 	}
-	if (statussig == -1)
-		statussig = 0;
 	return ClkStatusText;
 }
 
