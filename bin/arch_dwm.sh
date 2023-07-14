@@ -7,7 +7,7 @@ cd && cd AUR && git clone https://aur.archlinux.org/yay-bin.git
 cd yay-bin
 makepkg -si -r && cd
 
-yay -S fnm eww papirus-folders-catppuccin-git catppuccin-gtk-theme-mocha catppuccin-cursors-mocha ckb-next aide insync acct mullvad-vpn 
+yay -S fnm eww-x11-git papirus-folders-catppuccin-git catppuccin-gtk-theme-mocha catppuccin-cursors-mocha ckb-next aide insync acct mullvad-vpn ueberzugpp 
 
 #-------------------------------------------------
 #---- SETUP OTHER APPS----------------------------
@@ -15,6 +15,7 @@ yay -S fnm eww papirus-folders-catppuccin-git catppuccin-gtk-theme-mocha catppuc
 
 sudo systemctl set-default graphical.target 
 systemctl --user enable --now wireplumber.service pipewire-pulse.socket pipewire.socket pipewire-pulse.service pipewire.service pipewire-pulse.socket pipewire.socket pipewire-pulse.service pipewire.service
+
 echo "Setting Up npm"
 cd 
 mkdir ~/.npm-global 

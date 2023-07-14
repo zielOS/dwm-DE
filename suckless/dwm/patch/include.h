@@ -3,11 +3,13 @@
 #include "bar_tagicons.h"
 #include "bar.h"
 
+#include "bar_alternativetags.h"
+#include "bar_dwmblocks.h"
 #include "bar_ltsymbol.h"
 #include "bar_status.h"
-#include "bar_status2d.h"
 #include "bar_statusbutton.h"
 #include "bar_statuscmd.h"
+#include "bar_statuscolors.h"
 #include "bar_winicon.h"
 #include "bar_tags.h"
 #include "bar_tagpreview.h"
@@ -34,6 +36,7 @@
 #include "shiftview.h"
 #include "shiftviewclients.h"
 #include "swallow.h"
+#include "togglefullscreen.h"
 #include "vanitygaps.h"
 #include "warp.h"
 /* Layouts */
